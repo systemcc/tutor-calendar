@@ -479,7 +479,7 @@ function openPreviousPage() {
             margin = (9 + level * 17);
             returnVal = "<li class='sitemapNode sitemapExpandableNode'><div><div class='sitemapPageLinkContainer' style='margin-left:" + margin + "px'><a class='sitemapPlusMinusLink'><span class='sitemapMinus'></span></a>";
         } else {
-            margin = (21 + level * 17);
+            margin = (19 + level * 17);
             returnVal = "<li class='sitemapNode sitemapLeafNode'><div><div class='sitemapPageLinkContainer' style='margin-left:" + margin + "px'>";
         }
 

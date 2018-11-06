@@ -217,7 +217,7 @@ $axure.internal(function ($ax) {
           var axObj = $ax('#' + id);
           var rect = axObj.pageBoundingRect();
           var style = $ax.style.computeFullStyle(id, $ax.style.generateState(id), $ax.adaptive.currentViewId);
-
+          style.text = axObj.text();
           return { 'id': id, 'rect': rect, 'style': style };
         }
         return undefined;

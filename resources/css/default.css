@@ -1,9 +1,15 @@
 ﻿body {
-    font-family: 'Nunito Sans', 'Trebuchet MS', Arial;
+    font-family: 'Source Sans Pro', 'Trebuchet MS', Arial;
     font-size: 14px;
     color: #2c2c2c;
     -webkit-font-smoothing: antialiased;
-    overflow:hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "kern";
+    -moz-font-feature-settings: "kern";
+    -moz-font-feature-settings: "kern=1";
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+    overflow: hidden;
 }
 
 a {
@@ -455,7 +461,7 @@ input[type=text]::-ms-clear {
 }
 
 .showOption {
-    font-size: 13px;
+    font-size: 14px;
 	padding: 9px 0px 0px 15px;
     color: #3B3B3B;
 }
@@ -540,7 +546,7 @@ div.axClearMsgBubble_Player {
     display: block;
     width: 95px;
     margin: auto;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 26px;
     color: #ffffff;
 }
@@ -751,8 +757,8 @@ div.axClearMsgBubble_Player {
 #interfaceControlFrameLeft {
     flex: 1;
     display: flex;
-    font-size: 13px;
-    line-height: 30px;
+    font-size: 14px;
+    line-height: 29px;
     color: #3b3b3b;
 }
 
@@ -783,7 +789,7 @@ div.axClearMsgBubble_Player {
 }
 
 #previewNotice {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 36px;
     display: none;
 }

@@ -549,13 +549,13 @@
                     $('html').css('height', pageSize.bottom + 'px');
                 }
 
-                if (SAFARI) _setTrackpadHorizontalScroll(false);
+                //if (SAFARI) _setTrackpadHorizontalScroll(false);
 
                 if ($('html').getNiceScroll().length == 0 && !MOBILE_DEVICE) {// || !$axure.player.isMobileMode())) {
                 //if ($('html').getNiceScroll().length == 0) {
                     $('html').scrollLeft(0);
 
-                    $('html').niceScroll({ emulatetouch: true, horizrailenabled: false });
+                    if (!SAFARI) $('html').niceScroll({ emulatetouch: true, horizrailenabled: false });
                     $('html').addClass('mobileFrameCursor');
                     $('html').css('cursor', 'url(resources/css/images/touch.cur), auto');
                     $('html').css('cursor', 'url(resources/css/images/touch.svg) 32 32, auto');
@@ -582,9 +582,9 @@
                     $(function () { _setHorizontalScroll(false); });
                 }
             } else {
-                if (SAFARI) _setTrackpadHorizontalScroll(true);
+                //if (SAFARI) _setTrackpadHorizontalScroll(true);
 
-                $('html').getNiceScroll().remove();
+                if (!SAFARI) $('html').getNiceScroll().remove();
                 $('html').css('overflow-x', '');
                 $('html').css('cursor', '');
                 $('html').removeAttr('style');

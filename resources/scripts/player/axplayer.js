@@ -11,6 +11,8 @@ var RP_VERSION = 9;
 var lastLeftPanelWidth = 220;
 var lastRightPanelWidth = 220;
 var toolBarOnly = true;
+// TODO: need to find a way to get rid of iphone X hacks!!!
+// - could possibly have app detect iphone and send information back to player, but currently, that information would arrive too late
 var iphoneX = false;
 var iphoneXFirstPass = true;
 
@@ -202,7 +204,7 @@ var iphoneXFirstPass = true;
             $axure.messageCenter.postMessage('expandFrame');
         });
 
-        $('#mHideSidebar').on($axure.eventNames.mouseDownName, startM);
+        $('#mHideSidebar').on($axure.eventNames.mouseDownName, function (e) { startM(e); });
         $('#lsplitbar').on($axure.eventNames.mouseDownName, startLeftSplit);
         $('#rsplitbar').on($axure.eventNames.mouseDownName, startRightSplit);
 
@@ -1450,6 +1452,14 @@ var iphoneXFirstPass = true;
             if (MOBILE_DEVICE) {
                 $('body').removeClass('hashover');
 
+                if (SAFARI) {
+                    // Stop pinch zoom (stopping all gestures for now)
+                    // Gesturestart is only supported in Safari
+                    document.addEventListener("gesturestart", function (e) {
+                        e.preventDefault();
+                    });
+                }
+
                 if (IOS) {
                     // Attempt at removing elastic scroll while in mobile menu
                     var touching = false;
@@ -1509,8 +1519,14 @@ var iphoneXFirstPass = true;
                     $('body').css('-webkit-text-size-adjust', '100%');
 
                     // Prepare for Iphone X hacks
+                    // Link for dimensions: https://kapeli.com/cheat_sheets/iOS_Design.docset/Contents/Resources/Documents/index
                     var ratio = window.devicePixelRatio || 1;
+                    // Regular iphoneX
                     if (IOS && window.screen.width * ratio == 1125 && window.screen.height * ratio === 2436) {
+                        iphoneX = true;
+                    }
+                    // Iphone XS Max and Iphone XR
+                    if (IOS && window.screen.width == 414 && window.screen.height === 896) {
                         iphoneX = true;
                     }
 
@@ -1585,6 +1601,9 @@ var iphoneXFirstPass = true;
         $('#mobileControlFrameContainer').append(toAppend);
 
         $('#closeBackground').click(collapse);
+
+        // iOS will do incorrect click position / content bounds calculation which results in scroll getting reset to (0, 0)
+        if (IOS) $('#mobileControlFrameContainer').on($axure.eventNames.mouseDownName, function (e) { e.stopPropagation(); });
     }
 
     function appendNativePrototypeControlFrame() {
@@ -1757,7 +1776,7 @@ var iphoneXFirstPass = true;
         return $('.rightPanel.mobileMode').last().position().left + 100;
     }
 
-    function startM() {
+    function startM(e) {
         // Android touch event does not define pageX directly
         if(window.event.pageX) {
             startMX = window.event.pageX;
@@ -1769,6 +1788,10 @@ var iphoneXFirstPass = true;
         var $m = $('#mHideSidebar');
         startMLeft = Number($m.css('left').replace('px', ''));
         $(document).bind($axure.eventNames.mouseMoveName, doMMove).bind($axure.eventNames.mouseUpName, endMMove);
+
+        // Must stop propagation on iOS; otherwise scroll position of content will be reset to (0, 0)
+        // (likely due to position of click being calculated as out of bounds for outerContainer -- iOS is not adding scroll offset to bounds)
+        if (IOS) { e.stopPropagation() };
     }
 
     function doMMove() {

@@ -233,7 +233,6 @@
                     if(now - lastTouch < 375) {
                         if(++touchCount === 3) {
                             $ax.messageCenter.postMessage('tripleClick', true);
-                            touchCount = 0;
                             e.preventDefault();
                         };
                     } else {
@@ -244,7 +243,20 @@
 
             // Block IOS stalling second tap.
             // Stop third click from also clicking mobile card
-            $('html').on('touchend', function (e) { e.preventDefault() });
+            $('html').on('touchend', function (e) {
+                if(touchCount === 3) {
+                    touchCount = 0;
+                    e.preventDefault();
+                }
+            });
+
+            // Stop pinch zoom (stopping all gestures for now)
+            // Gesturestart is only supported in Safari
+            if (SAFARI) {
+                document.addEventListener("gesturestart", function (e) {
+                    e.preventDefault();
+                });
+            }
         }
 
         $ax.annotation.initialize();
